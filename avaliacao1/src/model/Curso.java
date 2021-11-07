@@ -2,7 +2,7 @@ package model;
 
 import java.util.List;
 
-public class Curso extends Produto{
+public class Curso extends Produto {
     private List<Disciplina> disciplinas;
     private List<Livro> livros;
     private int chTotal;
@@ -10,7 +10,7 @@ public class Curso extends Produto{
     @Override
     public Double getPreco() {
 
-        if(this.preco == null)
+        if (this.preco == null)
             this.preco = 0.0;
 
         return this.preco;
@@ -53,5 +53,30 @@ public class Curso extends Produto{
 
     public void setLivro(Livro livro) {
         this.livros.add(livro);
+    }
+
+    @Override
+    public String toString() {
+        String disciplinas = "";
+        String livros = "";
+
+        if (this.disciplinas != null)
+            for (Disciplina disciplina : this.disciplinas) {
+                disciplinas += (disciplina.toString() + " ");
+            }
+
+        if (this.livros != null)
+        for (Livro livro : this.livros) {
+            livros += (livro.toString() + " ");
+        }
+
+        return "Curso{" +
+                "disciplinas=" + disciplinas +
+                ", livros=" + livros +
+                ", chTotal=" + chTotal +
+                ", codigo='" + codigo + '\'' +
+                ", nome='" + nome + '\'' +
+                ", preco=" + preco +
+                '}';
     }
 }

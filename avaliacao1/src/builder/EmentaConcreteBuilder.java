@@ -14,23 +14,24 @@ public class EmentaConcreteBuilder implements BuilderClass {
     }
 
     @Override
+    public void setNomeCurso(String nomeCurso) {
+        this.ementa.setNome(nomeCurso);
+    }
+
+    @Override
+    public void setCodigoCurso(String codigoCurso) {
+        this.ementa.setCodigo(codigoCurso);
+    }
+
+    @Override
     public void setDisciplina(Disciplina disciplina) {
         this.ementa.setDisciplina(disciplina);
     }
 
-    @Override
-    public void setDisciplina(String nomeDisciplina) {
-
-    }
 
     @Override
     public void setLivro(Livro livro) {
         this.ementa.setLivro(livro);
-    }
-
-    @Override
-    public void setLivro(String nomeLivro) {
-
     }
 
     public Ementa getResultado() {

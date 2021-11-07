@@ -6,8 +6,8 @@ import model.Produto;
 
 interface BuilderClass {
     void reset();
+    void setNomeCurso(String nomeCurso);
+    void setCodigoCurso(String codigoCurso);
     void setDisciplina(Disciplina disciplina);
-    void setDisciplina(String nomeDisciplina);
     void setLivro(Livro livro);
-    void setLivro(String nomeLivro);
 }
