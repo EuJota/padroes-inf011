@@ -2,7 +2,6 @@ package builder;
 
 import model.Disciplina;
 import model.Livro;
-import model.Produto;
 
 interface BuilderClass {
     void reset();

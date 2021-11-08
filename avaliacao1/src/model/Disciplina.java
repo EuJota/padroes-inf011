@@ -5,11 +5,6 @@ public class Disciplina extends Produto {
     private double pctCumprido;
 
     @Override
-    public Double getPreco() {
-      return this.preco;
-    }
-
-    @Override
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }

@@ -4,11 +4,6 @@ public class Livro extends Produto {
     private String isbn;
 
     @Override
-    public Double getPreco() {
-        return this.preco;
-    }
-
-    @Override
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }

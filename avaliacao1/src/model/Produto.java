@@ -8,5 +8,4 @@ public abstract class Produto {
     public abstract void setCodigo(String codigo);
     public abstract void setNome(String nome);
     public abstract void setPreco(Double preco);
-    public abstract Double getPreco();
 }

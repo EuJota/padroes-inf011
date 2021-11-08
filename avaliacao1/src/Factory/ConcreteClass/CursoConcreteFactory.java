@@ -1,4 +1,4 @@
-package Factory.ConcreteClass;
+package factory.ConcreteClass;
 
 import builder.CursoConcreteBuilder;
 import builder.Diretor;

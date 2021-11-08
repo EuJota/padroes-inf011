@@ -1,4 +1,4 @@
-package Factory.ConcreteClass;
+package factory.ConcreteClass;
 
 import model.Disciplina;
 import model.ProdutoContrato;

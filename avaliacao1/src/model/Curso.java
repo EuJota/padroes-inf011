@@ -1,19 +1,27 @@
 package model;
 
+import prototype.Prototype;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Curso extends Produto {
+public class Curso extends Produto implements Prototype {
     private List<Disciplina> disciplinas;
     private List<Livro> livros;
     private int chTotal;
 
-    @Override
-    public Double getPreco() {
-
-        if (this.preco == null)
-            this.preco = 0.0;
-
-        return this.preco;
+    public Curso() {
+        this.livros = new ArrayList<>();
+        this.disciplinas = new ArrayList<>();
+        this.chTotal = 0;
+    }
+    public Curso(Curso curso) {
+        this.nome = curso.nome;
+        this.codigo  = curso.codigo;
+        this.chTotal = curso.chTotal;
+        this.preco = curso.preco;
+        this.disciplinas = curso.disciplinas;
+        this.livros = curso.livros;
     }
 
     @Override
@@ -66,9 +74,9 @@ public class Curso extends Produto {
             }
 
         if (this.livros != null)
-        for (Livro livro : this.livros) {
-            livros += (livro.toString() + " ");
-        }
+            for (Livro livro : this.livros) {
+                livros += (livro.toString() + " ");
+            }
 
         return "Curso{" +
                 "disciplinas=" + disciplinas +
@@ -78,5 +86,10 @@ public class Curso extends Produto {
                 ", nome='" + nome + '\'' +
                 ", preco=" + preco +
                 '}';
+    }
+
+    @Override
+    public Produto clonar() {
+        return new Curso(this);
     }
 }
