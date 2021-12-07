@@ -1,14 +1,44 @@
 package model;
 
+import observer.Evento;
+import observer.StateCheckpointObserver;
 import prototype.Prototype;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Curso extends Produto implements Prototype {
+    private final String EVENTO_RESTAURACAO = "restauracao";
+    private final String EVENTO_OCORRENCIA = "ocorrencia";
+
+    /**
+     * Inner class com responsabilidade de memento
+     * classe com a responsabilidade de gerenciar os estados do curso: Restaurar estado e retornar estado
+     */
+    public class Checkpoint {
+        private Curso curso;
+
+        private Checkpoint(Curso curso) {
+            this.curso = curso;
+        }
+
+
+        //TODO -> CORRIGIR RESTAURACAO DE ESTADO PARA MEMENTO
+        private void restore() {
+            listener(EVENTO_RESTAURACAO);
+        }
+    }
+
+    public Checkpoint getCheckpoint() {
+        listener(EVENTO_OCORRENCIA);
+        return new Checkpoint(this);
+    }
+
     private List<Disciplina> disciplinas;
     private List<Livro> livros;
     private int chTotal;
+    private boolean notificacoesOn = false;
+    private List<TipoNotificacao> tiposNotificacao;
 
     public Curso() {
         this.livros = new ArrayList<>();
@@ -26,28 +56,6 @@ public class Curso extends Produto implements Prototype {
     }
 
 
-    /**
-     * Inner class com responsabilidade de memento
-     * classe com a responsabilidade de gerenciar os estados do curso: Restaurar estado e retornar estado
-     */
-    public class Checkpoint {
-        private Curso curso;
-
-        private Checkpoint(Curso curso) {
-            this.curso = curso;
-        }
-
-
-        //TODO -> CORRIGIR RESTAURACAO DE ESTADO
-        private void restore() {
-
-        }
-    }
-
-    public Checkpoint getCheckpoint() {
-        return new Checkpoint(this);
-    }
-
     // TODO -> criar metodo get disciplina em disciplina pra remover esse if daqui
     public void avançarDisciplina(String nomeDisciplina, Double pctCumprido) {
         for (Disciplina disciplina : disciplinas) {
@@ -60,6 +68,27 @@ public class Curso extends Produto implements Prototype {
 
     public void restore(Checkpoint checkpoint) {
         checkpoint.restore();
+    }
+
+    public void ativarObserver(List<TipoNotificacao> tiposNotificacao) {
+        this.notificacoesOn = true;
+        this.tiposNotificacao = tiposNotificacao;
+    }
+
+    public void desativarObserver() {
+        this.notificacoesOn = false;
+        this.tiposNotificacao.clear();
+    }
+
+    private void listener(String descricao) {
+        if(!this.tiposNotificacao.isEmpty() && notificacoesOn) {
+            StateCheckpointObserver stateCheckpoint = new StateCheckpointObserver();
+            stateCheckpoint.notifyStateChanged(new Evento(descricao, this.tiposNotificacao, this.disciplinas));
+        }
+    }
+
+    public void addTipoNotificacao(TipoNotificacao tipoNotificacao) {
+        this.tiposNotificacao.add(tipoNotificacao);
     }
 
 

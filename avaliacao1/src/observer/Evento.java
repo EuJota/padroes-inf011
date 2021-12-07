@@ -6,14 +6,12 @@ import model.TipoNotificacao;
 import java.util.List;
 
 public class Evento {
-    private String de;
-    private String para;
+    private String descricao;
     private List<TipoNotificacao> tiposNotificacao;
     private List<Disciplina> disciplinas;
 
-    Evento(String de, String para, List<TipoNotificacao> tiposNotificacao, List<Disciplina> disciplinas) {
-        this.de = de;
-        this.para = para;
+    public Evento(String descricao, List<TipoNotificacao> tiposNotificacao, List<Disciplina> disciplinas) {
+        this.descricao = descricao;
         this.tiposNotificacao = tiposNotificacao;
         this.disciplinas = disciplinas;
     }
@@ -22,11 +20,7 @@ public class Evento {
         return tiposNotificacao;
     }
 
-    public String getDe() {
-        return de;
-    }
-
-    public String getPara() {
-        return para;
+    public String getDescricao() {
+        return descricao;
     }
 }

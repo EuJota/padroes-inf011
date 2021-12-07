@@ -27,9 +27,12 @@ public class Factory {
     public void enviaNotificacao(Evento evento) {
        evento.getTiposNotificacao().forEach( opcao -> {
            switch (opcao) {
-               case EMAIL: System.out.println("Enviando email de " +evento.getDe() + " para " +evento.getPara());
+               case EMAIL: System.out.println("Enviando email de evento" +evento.getDescricao());
+                    break;
                case WHATSAPP: System.out.println("Enviando mesnagem");
+                   break;
                case LIGACAO: System.out.println("Ligando");
+                   break;
            }
        });
    }
