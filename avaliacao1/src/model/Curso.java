@@ -15,6 +15,7 @@ public class Curso extends Produto implements Prototype {
         this.disciplinas = new ArrayList<>();
         this.chTotal = 0;
     }
+
     public Curso(Curso curso) {
         this.nome = curso.nome;
         this.codigo  = curso.codigo;
@@ -23,6 +24,44 @@ public class Curso extends Produto implements Prototype {
         this.disciplinas = curso.disciplinas;
         this.livros = curso.livros;
     }
+
+
+    /**
+     * Inner class com responsabilidade de memento
+     * classe com a responsabilidade de gerenciar os estados do curso: Restaurar estado e retornar estado
+     */
+    public class Checkpoint {
+        private Curso curso;
+
+        private Checkpoint(Curso curso) {
+            this.curso = curso;
+        }
+
+
+        //TODO -> CORRIGIR RESTAURACAO DE ESTADO
+        private void restore() {
+
+        }
+    }
+
+    public Checkpoint getCheckpoint() {
+        return new Checkpoint(this);
+    }
+
+    // TODO -> criar metodo get disciplina em disciplina pra remover esse if daqui
+    public void avançarDisciplina(String nomeDisciplina, Double pctCumprido) {
+        for (Disciplina disciplina : disciplinas) {
+            if(disciplina.getNome().equals(nomeDisciplina) && disciplina.getPctCumprido() < pctCumprido){
+                disciplina.setPctCumprido(pctCumprido);
+                break;
+            }
+        }
+    }
+
+    public void restore(Checkpoint checkpoint) {
+        checkpoint.restore();
+    }
+
 
     @Override
     public void setCodigo(String codigo) {
@@ -46,7 +85,7 @@ public class Curso extends Produto implements Prototype {
         return this.chTotal;
     }
 
-    public double getPctCumprido() {
+    public double getPctTotalCumprido() {
         double pctCumprido = 0;
 
         for (Disciplina disciplina : disciplinas)
@@ -70,21 +109,21 @@ public class Curso extends Produto implements Prototype {
 
         if (this.disciplinas != null)
             for (Disciplina disciplina : this.disciplinas) {
-                disciplinas += (disciplina.toString() + " ");
+                disciplinas += (disciplina.toString() + "\n\t");
             }
 
         if (this.livros != null)
             for (Livro livro : this.livros) {
-                livros += (livro.toString() + " ");
+                livros += (livro.toString() + "\n\t");
             }
 
-        return "Curso{" +
-                "disciplinas=" + disciplinas +
-                ", livros=" + livros +
-                ", chTotal=" + chTotal +
-                ", codigo='" + codigo + '\'' +
-                ", nome='" + nome + '\'' +
-                ", preco=" + preco +
+        return "Curso {\n" +
+                "chTotal = " + chTotal +
+                ", codigo = '" + codigo + '\'' +
+                ", nome = '" + nome + '\'' +
+                ", preco = " + preco + "\n" +
+                "disciplinas = \n\t" + disciplinas +
+                "livros = \n" + livros +
                 '}';
     }
 

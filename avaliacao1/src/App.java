@@ -4,19 +4,46 @@ import factory.Factory;
 import Singleton.Catalogo;
 import model.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class App {
     Catalogo catalogo;
 
     public void run() {
-        catalogo = Catalogo.getInstance();
+//        catalogo = Catalogo.getInstance();
+//
+//        // testando singleton e criacao de produtos a partir da factory (criando apenas cursos para teste)
+//        catalogo.printCatalogo();
+//
+//        //testando criar clone a partir do prototype
+//        criarClonesCursos("curso teste");
 
-        // testando singleton e criacao de produtos a partir da factory (criando apenas cursos para teste)
-        catalogo.printCatalogo();
+        q1AV2();
+    }
 
-        //testando criar clone a partir do prototype
-        criarClonesCursos("curso teste");
+    public void q1AV2() {
+        Stack<Curso.Checkpoint> pilha = new Stack<>();
+
+        Disciplina d1 = (Disciplina) criarProduto("Padroes", "1234", TipoProduto.DISCIPLINA);
+        Disciplina d2 = (Disciplina) criarProduto("Banco", "12345", TipoProduto.DISCIPLINA);
+
+        ArrayList<Disciplina> discs = new ArrayList<Disciplina>();
+        ArrayList<Livro> livros = new ArrayList<Livro>();
+
+        discs.add(d1);
+        discs.add(d2);
+
+        Curso curso = criaCurso("ADS", "001", livros , discs);
+
+        pilha.push(curso.getCheckpoint());
+        curso.avançarDisciplina("Padroes", 10.0);
+        pilha.push(curso.getCheckpoint());
+        curso.avançarDisciplina("Padroes", 25.0);
+        curso.restore(pilha.pop());
+
+        System.out.println(curso.toString());
     }
 
     /**
@@ -29,6 +56,14 @@ public class App {
     static Produto criarProduto(String nomeProduto, String codigo, TipoProduto tipoProduto) {
         Factory factory = new Factory();
         return factory.criarProduto(nomeProduto, codigo, tipoProduto);
+    }
+
+    Curso criaCurso(String nome, String codigo, List<Livro> livros, List<Disciplina> disciplinas) {
+        Diretor diretor = new Diretor();
+        CursoConcreteBuilder builder = new CursoConcreteBuilder();
+        diretor.constructorSimplesCurso(nome, codigo, builder, livros, disciplinas);
+
+        return builder.getResultado();
     }
 
     /**
