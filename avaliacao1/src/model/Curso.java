@@ -3,35 +3,41 @@ package model;
 import observer.Evento;
 import observer.StateCheckpointObserver;
 import prototype.Prototype;
+import state.AndamentoState;
+import state.ControladorState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Curso extends Produto implements Prototype {
-    private final String EVENTO_RESTAURACAO = "restauracao";
-    private final String EVENTO_OCORRENCIA = "ocorrencia";
+    public final String EVENTO_RESTAURACAO = "restauracao";
+    public final String EVENTO_OCORRENCIA = "ocorrencia";
 
-    /**
-     * Inner class com responsabilidade de memento
-     * classe com a responsabilidade de gerenciar os estados do curso: Restaurar estado e retornar estado
-     */
     public class Checkpoint {
         private Curso curso;
 
         private Checkpoint(Curso curso) {
-            this.curso = curso;
+            this.curso = new Curso(curso);
         }
 
-
-        //TODO -> CORRIGIR RESTAURACAO DE ESTADO PARA MEMENTO
-        private void restore() {
-            listener(EVENTO_RESTAURACAO);
+        public void restore() {
+            System.out.println(this.curso);
+            this.curso.setChTotal(10);
+            this.curso.setDisciplinas(new ArrayList<Disciplina>());
+            System.out.println(this.curso);
+            //this.curso.setDisciplinas(curso.getDisciplinas());
         }
-    }
 
-    public Checkpoint getCheckpoint() {
-        listener(EVENTO_OCORRENCIA);
-        return new Checkpoint(this);
+        @Override
+        public String toString() {
+            return "Checkpoint { " +
+                    curso.chTotal + " " +
+                    curso.nome + " " +
+                    " curso = " + curso.disciplinas.toString() +
+                    '}';
+        }
+        //+
+        //                    " curso =" + curso.disciplinas.toString() +
     }
 
     private List<Disciplina> disciplinas;
@@ -39,11 +45,13 @@ public class Curso extends Produto implements Prototype {
     private int chTotal;
     private boolean notificacoesOn = false;
     private List<TipoNotificacao> tiposNotificacao;
+    private ControladorState state;
 
     public Curso() {
         this.livros = new ArrayList<>();
         this.disciplinas = new ArrayList<>();
         this.chTotal = 0;
+        this.state = new AndamentoState(this);
     }
 
     public Curso(Curso curso) {
@@ -53,21 +61,44 @@ public class Curso extends Produto implements Prototype {
         this.preco = curso.preco;
         this.disciplinas = curso.disciplinas;
         this.livros = curso.livros;
+        this.notificacoesOn = curso.notificacoesOn;
+        this.tiposNotificacao = curso.tiposNotificacao;
+        this.state = curso.state;
     }
 
+    public void concluirCurso() {
+        this.state = this.state.concluir();
+    }
 
-    // TODO -> criar metodo get disciplina em disciplina pra remover esse if daqui
-    public void avançarDisciplina(String nomeDisciplina, Double pctCumprido) {
-        for (Disciplina disciplina : disciplinas) {
-            if(disciplina.getNome().equals(nomeDisciplina) && disciplina.getPctCumprido() < pctCumprido){
-                disciplina.setPctCumprido(pctCumprido);
-                break;
-            }
-        }
+    public void retomarAndamentoCurso() {
+        this.state = this.state.andamento();
+    }
+
+    public void suspenderCurso() {
+        this.state = this.state.suspender();
+    }
+
+    public void cancelarCurso() {
+        this.state = this.state.cancelar();
+    }
+
+    public void getCertificado() {
+        this.state.getCertificado();
+    }
+
+    public void avancarDisciplina(String nomeDisciplina, Double pctCumprido) {
+        this.state.avancar(this, nomeDisciplina, pctCumprido);
+    }
+
+    public Checkpoint getCheckpoint() {
+        return new Checkpoint(this);
+        //return this.state.getCheckpoint(this);
     }
 
     public void restore(Checkpoint checkpoint) {
+        System.out.println("restore "+checkpoint);
         checkpoint.restore();
+        //this.state.restore(checkpoint);
     }
 
     public void ativarObserver(List<TipoNotificacao> tiposNotificacao) {
@@ -80,7 +111,7 @@ public class Curso extends Produto implements Prototype {
         this.tiposNotificacao.clear();
     }
 
-    private void listener(String descricao) {
+    public void listener(String descricao) {
         if(!this.tiposNotificacao.isEmpty() && notificacoesOn) {
             StateCheckpointObserver stateCheckpoint = new StateCheckpointObserver();
             stateCheckpoint.notifyStateChanged(new Evento(descricao, this.tiposNotificacao, this.disciplinas));
@@ -90,7 +121,6 @@ public class Curso extends Produto implements Prototype {
     public void addTipoNotificacao(TipoNotificacao tipoNotificacao) {
         this.tiposNotificacao.add(tipoNotificacao);
     }
-
 
     @Override
     public void setCodigo(String codigo) {
@@ -107,11 +137,14 @@ public class Curso extends Produto implements Prototype {
         this.preco = preco;
     }
 
-    public int getCHTotal() {
-        for (Disciplina disciplina : disciplinas)
-            this.chTotal += disciplina.getChTotal();
+    public void setChTotal(int chTotal) { this.chTotal = chTotal; }
 
-        return this.chTotal;
+    public int getCHTotal() {
+        int chTotal = 0;
+        for (Disciplina disciplina : disciplinas)
+            chTotal += disciplina.getChTotal();
+
+        return chTotal;
     }
 
     public double getPctTotalCumprido() {
@@ -123,12 +156,24 @@ public class Curso extends Produto implements Prototype {
         return pctCumprido;
     }
 
-    public void setDisciplina(Disciplina disciplinas) {
-        this.disciplinas.add(disciplinas);
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplinas.add(disciplina);
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return this.disciplinas;
     }
 
     public void setLivro(Livro livro) {
         this.livros.add(livro);
+    }
+
+    public void updateChTotal(int chTotal) {
+        this.chTotal = chTotal;
     }
 
     @Override

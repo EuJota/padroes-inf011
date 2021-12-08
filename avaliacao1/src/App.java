@@ -20,7 +20,7 @@ public class App {
 //        //testando criar clone a partir do prototype
 //        criarClonesCursos("curso teste");
 
-        q2AV2();
+        q3AV2();
     }
 
     public void q1AV2() {
@@ -38,12 +38,15 @@ public class App {
         Curso curso = criaCurso("ADS", "001", livros , discs);
 
         pilha.push(curso.getCheckpoint());
-        curso.avançarDisciplina("Padroes", 10.0);
+        curso.avancarDisciplina("Padroes", 10.0);
+        System.out.println(curso);
         pilha.push(curso.getCheckpoint());
-        curso.avançarDisciplina("Padroes", 25.0);
-        curso.restore(pilha.pop());
+        curso.avancarDisciplina("Padroes", 25.0);
+        System.out.println(curso);
+        pilha.pop();
+        curso.restore(pilha.get(0));
 
-        System.out.println(curso.toString());
+        System.out.println(curso);
     }
 
     public void q2AV2() {
@@ -52,33 +55,66 @@ public class App {
         Disciplina d1 = (Disciplina) criarProduto("Padroes", "1234", TipoProduto.DISCIPLINA);
         Disciplina d2 = (Disciplina) criarProduto("Banco", "12345", TipoProduto.DISCIPLINA);
 
-        ArrayList<Disciplina> discs = new ArrayList<Disciplina>();
-        ArrayList<Livro> livros = new ArrayList<Livro>();
-        ArrayList<TipoNotificacao> tipos = new ArrayList<TipoNotificacao>();
+        ArrayList<Disciplina> discs = new ArrayList<>();
+        ArrayList<Livro> livros = new ArrayList<>();
+        ArrayList<TipoNotificacao> tipos = new ArrayList<>();
 
         discs.add(d1);
         discs.add(d2);
 
         tipos.add(TipoNotificacao.EMAIL);
 
+
         Curso curso = criaCurso("ADS", "001", livros , discs);
         curso.ativarObserver(tipos);
 
         pilha.push(curso.getCheckpoint());
-        curso.avançarDisciplina("Padroes", 10.0);
+
+        curso.updateChTotal(300);
+        curso.avancarDisciplina("Padroes", 10.0);
 
         curso.addTipoNotificacao(TipoNotificacao.WHATSAPP);
 
         pilha.push(curso.getCheckpoint());
-        curso.avançarDisciplina("Padroes", 25.0);
-        curso.restore(pilha.pop());
+
+        pilha.pop();
+        curso.restore(pilha.get(0));
 
         curso.desativarObserver();
-        System.out.println(curso.toString());
+    }
 
-        curso.avançarDisciplina("Padroes", 45.0);
+    public void q3AV2() {
+        Stack<Curso.Checkpoint> pilha = new Stack<>();
+
+        Disciplina d1 = (Disciplina) criarProduto("Padroes", "1234", TipoProduto.DISCIPLINA);
+        Disciplina d2 = (Disciplina) criarProduto("Banco", "12345", TipoProduto.DISCIPLINA);
+
+        ArrayList<Disciplina> discs = new ArrayList<>();
+        ArrayList<Livro> livros = new ArrayList<>();
+        ArrayList<TipoNotificacao> tipos = new ArrayList<>();
+
+        discs.add(d1);
+        discs.add(d2);
+
+        tipos.add(TipoNotificacao.EMAIL);
+
+
+        Curso curso = criaCurso("ADS", "001", livros , discs);
+        curso.ativarObserver(tipos);
+
         pilha.push(curso.getCheckpoint());
-        System.out.println(curso.toString());
+
+        curso.updateChTotal(300);
+        curso.avancarDisciplina("Padroes", 10.0);
+
+        curso.addTipoNotificacao(TipoNotificacao.WHATSAPP);
+
+        pilha.push(curso.getCheckpoint());
+
+        pilha.pop();
+        curso.restore(pilha.get(0));
+
+        curso.desativarObserver();
     }
 
 
