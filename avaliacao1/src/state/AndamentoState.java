@@ -17,8 +17,10 @@ public class AndamentoState extends AbstractControladorState implements Controla
     public void avancar(Curso curso1, String nomeDisciplina, Double pctCumprido) {
         List<Disciplina> disciplinaList = new ArrayList<>();
 
+        System.out.println("curso avancar " + curso);
+
         for (Disciplina disciplina : curso.getDisciplinas()) {
-            if (disciplina.getNome().equals(nomeDisciplina) && disciplina.getPctCumprido() < pctCumprido) {
+            if (disciplina.getNome().equals(nomeDisciplina) && disciplina.getPctCumprido() < pctCumprido ) {
                 Disciplina disciplina1 = new Disciplina(disciplina);
                 disciplina1.setPctCumprido(pctCumprido);
                 disciplinaList.add(disciplina1);
@@ -29,29 +31,29 @@ public class AndamentoState extends AbstractControladorState implements Controla
     }
 
     @Override
-    public void getCheckpoint(Curso curso1) {
+    public Curso.Checkpoint getCheckpoint(Curso curso1) {
         curso1.listener(curso1.EVENTO_OCORRENCIA);
-        return;
+        return new Curso().Checkpoint();
     }
 
     @Override
     public void restore(Curso.Checkpoint checkpoint) {
         if(checkpoint != null) {
             checkpoint.restore();
-            //curso.listener(curso.EVENTO_RESTAURACAO);
+            curso.listener(curso.EVENTO_RESTAURACAO);
         }
     }
 
     @Override
     public ControladorState concluir() {
         boolean todasDiscCompletas = false;
+        double pctTotal = 0;
 
         for (Disciplina disciplina : this.curso.getDisciplinas()) {
-            if (disciplina.getPctCumprido() == disciplina.getChTotal())
-                todasDiscCompletas = true;
+            pctTotal += disciplina.getPctCumprido();
         }
 
-        if (todasDiscCompletas) {
+        if (pctTotal == this.curso.getCHTotal()) {
             System.out.println("Curso completo");
             return new ConcluidoState(this.curso);
         } else {

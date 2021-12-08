@@ -4,7 +4,7 @@ import model.Curso;
 
 public interface ControladorState {
     void avancar(Curso curso, String nomeDisciplina, Double pctCumprido);
-    void getCheckpoint(Curso curso);
+    Curso.Checkpoint getCheckpoint(Curso curso);
     void restore(Curso.Checkpoint checkpoint);
     void getCertificado();
     ControladorState concluir();

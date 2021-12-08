@@ -13,7 +13,7 @@ public class Curso extends Produto implements Prototype {
     public final String EVENTO_RESTAURACAO = "restauracao";
     public final String EVENTO_OCORRENCIA = "ocorrencia";
 
-    public class Checkpoint {
+    public static class Checkpoint {
         private Curso curso;
 
         private Checkpoint(Curso curso) {
@@ -36,8 +36,6 @@ public class Curso extends Produto implements Prototype {
                     " curso = " + curso.disciplinas.toString() +
                     '}';
         }
-        //+
-        //                    " curso =" + curso.disciplinas.toString() +
     }
 
     private List<Disciplina> disciplinas;
@@ -50,14 +48,14 @@ public class Curso extends Produto implements Prototype {
     public Curso() {
         this.livros = new ArrayList<>();
         this.disciplinas = new ArrayList<>();
-        this.chTotal = 0;
+        this.chTotal = this.getCHTotal();
         this.state = new AndamentoState(this);
     }
 
     public Curso(Curso curso) {
         this.nome = curso.nome;
         this.codigo  = curso.codigo;
-        this.chTotal = curso.chTotal;
+        this.chTotal = curso.getCHTotal();
         this.preco = curso.preco;
         this.disciplinas = curso.disciplinas;
         this.livros = curso.livros;
@@ -91,8 +89,7 @@ public class Curso extends Produto implements Prototype {
     }
 
     public Checkpoint getCheckpoint() {
-        return new Checkpoint(this);
-        //return this.state.getCheckpoint(this);
+        return this.state.getCheckpoint(this);
     }
 
     public void restore(Checkpoint checkpoint) {
@@ -141,10 +138,11 @@ public class Curso extends Produto implements Prototype {
 
     public int getCHTotal() {
         int chTotal = 0;
-        for (Disciplina disciplina : disciplinas)
+        for (Disciplina disciplina : this.disciplinas)
             chTotal += disciplina.getChTotal();
 
-        return chTotal;
+        this.chTotal = chTotal;
+        return this.chTotal;
     }
 
     public double getPctTotalCumprido() {
@@ -174,6 +172,10 @@ public class Curso extends Produto implements Prototype {
 
     public void updateChTotal(int chTotal) {
         this.chTotal = chTotal;
+    }
+
+    public void getState() {
+        System.out.println("Estado atual "+this.state);
     }
 
     @Override

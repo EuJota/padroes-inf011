@@ -53,17 +53,22 @@ public class App {
         Stack<Curso.Checkpoint> pilha = new Stack<>();
 
         Disciplina d1 = (Disciplina) criarProduto("Padroes", "1234", TipoProduto.DISCIPLINA);
-        Disciplina d2 = (Disciplina) criarProduto("Banco", "12345", TipoProduto.DISCIPLINA);
+        //Disciplina d2 = (Disciplina) criarProduto("Banco", "12345", TipoProduto.DISCIPLINA);
 
         ArrayList<Disciplina> discs = new ArrayList<>();
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<TipoNotificacao> tipos = new ArrayList<>();
 
         discs.add(d1);
-        discs.add(d2);
+        //discs2.add(d2);
 
         tipos.add(TipoNotificacao.EMAIL);
 
+//        Curso curso = new Curso();
+//        curso.setNome("ADS");
+//        curso.setCodigo("1");
+//        curso.setChTotal(200);
+//        curso.setDisciplinas(discs);
 
         Curso curso = criaCurso("ADS", "001", livros , discs);
         curso.ativarObserver(tipos);
@@ -98,23 +103,46 @@ public class App {
 
         tipos.add(TipoNotificacao.EMAIL);
 
-
         Curso curso = criaCurso("ADS", "001", livros , discs);
         curso.ativarObserver(tipos);
 
+        System.out.println(curso.getCHTotal());
+        System.out.println(curso);
+
         pilha.push(curso.getCheckpoint());
 
-        curso.updateChTotal(300);
-        curso.avancarDisciplina("Padroes", 10.0);
+        System.out.println(curso.getCHTotal());
+
+        curso.avancarDisciplina("Padroes", 300.0);
+
+        System.out.println(curso.getCHTotal());
 
         curso.addTipoNotificacao(TipoNotificacao.WHATSAPP);
 
         pilha.push(curso.getCheckpoint());
 
-        pilha.pop();
-        curso.restore(pilha.get(0));
+        System.out.println(curso);
 
-        curso.desativarObserver();
+        curso.concluirCurso();
+        curso.getState();
+        curso.getCertificado();
+        curso.getState();
+        curso.suspenderCurso();
+        curso.getState();
+        curso.retomarAndamentoCurso();
+        curso.getState();
+//        curso.suspenderCurso();
+//        curso.getState();
+//        curso.cancelarCurso();
+//        curso.getState();
+        curso.avancarDisciplina("Padroes", 150.0);
+
+        //curso.getCheckpoint();
+
+//        pilha.pop();
+//        curso.restore(pilha.get(0));
+
+        //curso.desativarObserver();
     }
 
 
