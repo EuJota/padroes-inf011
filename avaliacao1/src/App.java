@@ -106,16 +106,11 @@ public class App {
         Curso curso = criaCurso("ADS", "001", livros , discs);
         curso.ativarObserver(tipos);
 
-        System.out.println(curso.getCHTotal());
         System.out.println(curso);
 
         pilha.push(curso.getCheckpoint());
 
-        System.out.println(curso.getCHTotal());
-
-        curso.avancarDisciplina("Padroes", 300.0);
-
-        System.out.println(curso.getCHTotal());
+        curso.avancarDisciplina("Padroes", 30.0);
 
         curso.addTipoNotificacao(TipoNotificacao.WHATSAPP);
 
@@ -129,8 +124,9 @@ public class App {
         curso.getState();
         curso.suspenderCurso();
         curso.getState();
-        curso.retomarAndamentoCurso();
+        curso.cancelarCurso();
         curso.getState();
+        curso.getCheckpoint();
 //        curso.suspenderCurso();
 //        curso.getState();
 //        curso.cancelarCurso();

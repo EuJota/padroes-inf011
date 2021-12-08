@@ -7,7 +7,6 @@ public class CanceladoState extends AbstractControladorState implements Controla
 
     CanceladoState(Curso curso) { this.curso = curso;}
 
-
     @Override
     public ControladorState cancelar() {
         curso.desativarObserver();

@@ -15,6 +15,7 @@ public class Disciplina extends Produto implements Prototype {
         this.preco = disciplina.preco;
         this.chTotal = disciplina.chTotal;
         this.pctCumprido = disciplina.pctCumprido;
+        this.codigo = disciplina.codigo;
     }
 
     public Disciplina(String codigo, String nome,

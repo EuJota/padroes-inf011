@@ -17,8 +17,6 @@ public class AndamentoState extends AbstractControladorState implements Controla
     public void avancar(Curso curso1, String nomeDisciplina, Double pctCumprido) {
         List<Disciplina> disciplinaList = new ArrayList<>();
 
-        System.out.println("curso avancar " + curso);
-
         for (Disciplina disciplina : curso.getDisciplinas()) {
             if (disciplina.getNome().equals(nomeDisciplina) && disciplina.getPctCumprido() < pctCumprido ) {
                 Disciplina disciplina1 = new Disciplina(disciplina);
@@ -33,7 +31,7 @@ public class AndamentoState extends AbstractControladorState implements Controla
     @Override
     public Curso.Checkpoint getCheckpoint(Curso curso1) {
         curso1.listener(curso1.EVENTO_OCORRENCIA);
-        return new Curso().Checkpoint();
+        return new Curso.Checkpoint(curso1);
     }
 
     @Override
@@ -46,7 +44,6 @@ public class AndamentoState extends AbstractControladorState implements Controla
 
     @Override
     public ControladorState concluir() {
-        boolean todasDiscCompletas = false;
         double pctTotal = 0;
 
         for (Disciplina disciplina : this.curso.getDisciplinas()) {

@@ -16,7 +16,7 @@ public class Curso extends Produto implements Prototype {
     public static class Checkpoint {
         private Curso curso;
 
-        private Checkpoint(Curso curso) {
+        public Checkpoint(Curso curso) {
             this.curso = new Curso(curso);
         }
 

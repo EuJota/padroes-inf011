@@ -12,9 +12,9 @@ public class SuspensoState extends AbstractControladorState implements Controlad
      */
 
     @Override
-    public void getCheckpoint(Curso curso1) {
+    public Curso.Checkpoint getCheckpoint(Curso curso1) {
         curso1.listener(curso1.EVENTO_OCORRENCIA);
-        return ;
+        return new Curso.Checkpoint(curso1);
     }
 
     @Override
