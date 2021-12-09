@@ -21,11 +21,6 @@ public class Curso extends Produto implements Prototype {
         }
 
         public void restore() {
-            System.out.println(this.curso);
-            this.curso.setChTotal(10);
-            this.curso.setDisciplinas(new ArrayList<Disciplina>());
-            System.out.println(this.curso);
-            //this.curso.setDisciplinas(curso.getDisciplinas());
         }
 
         @Override
@@ -93,9 +88,7 @@ public class Curso extends Produto implements Prototype {
     }
 
     public void restore(Checkpoint checkpoint) {
-        System.out.println("restore "+checkpoint);
-        checkpoint.restore();
-        //this.state.restore(checkpoint);
+        this.state.restore(checkpoint);
     }
 
     public void ativarObserver(List<TipoNotificacao> tiposNotificacao) {
@@ -133,8 +126,6 @@ public class Curso extends Produto implements Prototype {
     public void setPreco(Double preco) {
         this.preco = preco;
     }
-
-    public void setChTotal(int chTotal) { this.chTotal = chTotal; }
 
     public int getCHTotal() {
         int chTotal = 0;
